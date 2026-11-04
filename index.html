@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopora - Online Shopping</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f5f8ff;color:#14213d}
+a{text-decoration:none;color:inherit}
+.top{background:#073b82;color:white;padding:11px 5%;display:flex;justify-content:space-between;font-size:13px}
+header{background:white;padding:17px 5%;display:flex;align-items:center;gap:25px;justify-content:space-between;flex-wrap:wrap}
+.logo{font-size:30px;font-weight:900;color:#0875ed}
+.logo span{color:#f6b900}
+.search{display:flex;flex:1;max-width:550px}
+.search input{width:100%;padding:13px;border:1px solid #ddd;border-radius:9px 0 0 9px;outline:none}
+.search button{background:#0875ed;color:white;border:0;padding:0 22px;border-radius:0 9px 9px 0;cursor:pointer}
+.cart{font-weight:bold;cursor:pointer}
+nav{background:white;padding:14px 5%;display:flex;gap:30px;flex-wrap:wrap;box-shadow:0 3px 10px #ddd}
+nav a{font-weight:bold;font-size:14px}
+nav a:hover{color:#0875ed}
+.hero{margin:15px auto;width:94%;min-height:310px;border-radius:18px;background:linear-gradient(110deg,#0054c7,#1599f5);color:white;display:flex;align-items:center;justify-content:space-around;padding:35px;overflow:hidden}
+.hero h1{font-size:clamp(30px,5vw,53px);max-width:550px;line-height:1.12}
+.hero p{margin:18px 0;font-size:18px}
+.hero img{width:43%;max-height:270px;object-fit:contain}
+.btn{display:inline-block;background:#ffca05;color:#111;padding:14px 27px;border-radius:30px;font-weight:bold;border:0;cursor:pointer}
+section{padding:25px 5%}
+.heading{font-size:25px;margin-bottom:20px}
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.category{background:white;border-radius:12px;padding:20px;text-align:center;cursor:pointer;box-shadow:0 3px 12px #dce5f4;font-weight:bold}
+.category:hover{background:#e5f1ff;color:#0875ed;transform:translateY(-3px)}
+.category img{width:65px;height:65px;object-fit:contain;margin-bottom:8px}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{background:white;border-radius:14px;padding:13px;box-shadow:0 4px 15px #dce5f4;transition:.2s}
+.card:hover{transform:translateY(-5px)}
+.card img{width:100%;height:175px;object-fit:contain}
+.card h3{font-size:16px;margin:12px 0}
+.price{font-size:19px;font-weight:bold;color:#0875ed;margin:10px 0}
+.old{color:#aaa;text-decoration:line-through;font-size:13px;margin-left:8px}
+.add{width:100%;padding:12px;background:#0875ed;color:white;border:0;border-radius:8px;font-weight:bold;cursor:pointer}
+.add:hover{background:#0053b8}
+.services{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;background:#eaf3ff;text-align:center}
+.service{padding:20px}
+.service b{display:block;margin:8px}
+footer{background:#062d65;color:white;padding:35px 5%;text-align:center;line-height:2}
+.floating{position:fixed;right:18px;bottom:20px;display:flex;flex-direction:column;gap:12px}
+.floating a{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:white;font-size:23px;box-shadow:0 3px 10px #999}
+.messenger{background:#0875ed}
+.whatsapp{background:#16bd65}
+#cartBox{position:fixed;right:0;top:0;width:min(380px,100%);height:100vh;background:white;z-index:10;box-shadow:0 0 20px #888;padding:22px;display:none;overflow:auto}
+#cartBox h2{margin-bottom:20px}
+.cartitem{padding:12px 0;border-bottom:1px solid #ddd;display:flex;justify-content:space-between;gap:10px}
+.close{float:right;background:#eee;border:0;padding:8px 12px;cursor:pointer}
+#total{font-size:21px;font-weight:bold;margin:20px 0}
+.empty{text-align:center;color:#777;padding:30px}
+@media(max-width:800px){
+.products{grid-template-columns:repeat(2,1fr)}
+.categories{grid-template-columns:repeat(2,1fr)}
+.services{grid-template-columns:repeat(2,1fr)}
+.hero img{width:40%}
+header{gap:12px}
+}
+@media(max-width:480px){
+.top{font-size:10px}
+.hero{padding:25px;min-height:250px}
+.hero img{display:none}
+.hero h1{font-size:35px}
+nav{gap:15px;font-size:12px}
+.products{gap:10px}
+.card img{height:130px}
+.card{padding:9px}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+<span>🚚 Free Shipping on Orders Over ৳1000!</span>
+<span>📞 +880 1234 567890</span>
+</div>
+
+<header>
+<a class="logo" href="#">Shop<span>ora.</span></a>
+<div class="search">
+<input type="search" id="search" placeholder="Search for products..." oninput="render()">
+<button onclick="render()">🔍</button>
+</div>
+<div class="cart" onclick="showCart()">🛒 Cart (<span id="count">0</span>)</div>
+</header>
+
+<nav>
+<a href="#">🏠 Home</a>
+<a href="#categories">Categories</a>
+<a href="#products">Products</a>
+<a href="#products">🔥 Deals</a>
+<a href="#footer">Contact</a>
+</nav>
+
+<div class="hero">
+<div>
+<span style="background:#ffca05;color:#111;padding:9px 15px;border-radius:20px;font-weight:bold">⚡ SPECIAL OFFER</span>
+<h1>Upgrade Your Life with <span style="color:#ffda25">Shopora</span></h1>
+<p>Best Quality Products at Unbeatable Prices!</p>
+<a href="#products" class="btn">Shop Now →</a>
+</div>
+<img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=700" alt="Electronics">
+</div>
+
+<section id="categories">
+<h2 class="heading">🛍️ Shop By Categories</h2>
+<div class="categories">
+<div class="category" onclick="filter('Electronics')">
+<img src="https://cdn-icons-png.flaticon.com/512/3659/3659899.png">
+<p>Electronics Store</p>
+</div>
+<div class="category" onclick="filter('Home Goods')">
+<img src="https://cdn-icons-png.flaticon.com/512/619/619153.png">
+<p>Home Goods Store</p>
+</div>
+<div class="category" onclick="filter('Electronics')">
+<img src="https://cdn-icons-png.flaticon.com/512/1041/1041889.png">
+<p>Mobile & Gadgets</p>
+</div>
+<div class="category" onclick="filter('Home Goods')">
+<img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
+<p>Kitchen & Dining</p>
+</div>
+</div>
+</section>
+
+<section id="products">
+<h2 class="heading">⭐ Featured Products</h2>
+<div class="products" id="productGrid"></div>
+</section>
+
+<section class="services">
+<div class="service">💎<b>Premium Quality</b><small>Only the Best</small></div>
+<div class="service">🏷️<b>Best Price</b><small>Always Affordable</small></div>
+<div class="service">😊<b>Customer Satisfaction</b><small>Our Priority</small></div>
+<div class="service">❤️<b>Shopora Family</b><small>Thank You!</small></div>
+</section>
+
+<footer id="footer">
+<h2>Shopora</h2>
+<p>Shop Smart, Live Better</p>
+<p>Quality Products | Affordable Prices | Trusted Service</p>
+<p>📧 support@shopora.com</p>
+<p>© 2026 Shopora. All Rights Reserved.</p>
+</footer>
+
+<div class="floating">
+<a class="messenger" href="https://m.me/YOUR_PAGE_USERNAME" target="_blank">✉</a>
+<a class="whatsapp" href="https://wa.me/8801234567890" target="_blank">☏</a>
+</div>
+
+<div id="cartBox">
+<button class="close" onclick="hideCart()">✕ Close</button>
+<h2>🛒 Your Shopping Cart</h2>
+<div id="cartItems"></div>
+<div id="total">Total: ৳0</div>
+<button class="add" onclick="checkout()">Order via WhatsApp</button>
+</div>
+
+<script>
+const products=[
+{name:"Wireless Earbuds Pro",category:"Electronics",price:2999,old:3999,img:"https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=400"},
+{name:"Smart Watch Series 8",category:"Electronics",price:3499,old:3999,img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400"},
+{name:"Bluetooth Headphone",category:"Electronics",price:1999,old:2499,img:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400"},
+{name:"Smartphone",category:"Electronics",price:15999,old:17999,img:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400"},
+{name:"Air Fryer 5.5L",category:"Home Goods",price:7999,old:8999,img:"https://images.unsplash.com/photo-1648043672505-2b5c16c4b47c?w=400"},
+{name:"Coffee Maker",category:"Home Goods",price:4499,old:4999,img:"https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400"},
+{name:"Kitchen Cookware Set",category:"Home Goods",price:5499,old:6499,img:"https://images.unsplash.com/photo-1584990347449-a6b9a2f4b1c6?w=400"},
+{name:"Table Lamp",category:"Home Goods",price:1299,old:1599,img:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400"}
+];
+
+let cart=[];
+let activeCategory="All";
+
+function render(){
+const q=document.getElementById("search").value.toLowerCase();
+let list=products.filter(p=>
+(activeCategory==="All"||p.category===activeCategory)&&
+p.name.toLowerCase().includes(q)
+);
+document.getElementById("productGrid").innerHTML=list.map(p=>`
+<div class="card">
+<img src="${p.img}" alt="${p.name}" loading="lazy">
+<h3>${p.name}</h3>
+<div>⭐ ⭐ ⭐ ⭐ ⭐</div>
+<div class="price">৳${p.price.toLocaleString()} <span class="old">৳${p.old.toLocaleString()}</span></div>
+<button class="add" onclick="addCart('${p.name}')">🛒 Add to Cart</button>
+</div>`).join("")||"<p>No products found.</p>";
+}
+
+function filter(cat){
+activeCategory=cat;
+document.getElementById("search").value="";
+render();
+document.getElementById("products").scrollIntoView({behavior:"smooth"});
+}
+
+function addCart(name){
+let p=products.find(x=>x.name===name);
+cart.push(p);
+document.getElementById("count").innerText=cart.length;
+alert(name+" added to cart!");
+}
+
+function showCart(){
+document.getElementById("cartBox").style.display="block";
+updateCart();
+}
+function hideCart(){
+document.getElementById("cartBox").style.display="none";
+}
+function updateCart(){
+let box=document.getElementById("cartItems");
+let total=cart.reduce((s,p)=>s+p.price,0);
+box.innerHTML=cart.length?cart.map((p,i)=>`
+<div class="cartitem">
+<span>${p.name}<br>৳${p.price.toLocaleString()}</span>
+<button onclick="removeCart(${i})">❌</button>
+</div>`).join(""):'<div class="empty">Your cart is empty.</div>';
+document.getElementById("total").innerText="Total: ৳"+total.toLocaleString();
+}
+function removeCart(i){
+cart.splice(i,1);
+document.getElementById("count").innerText=cart.length;
+updateCart();
+}
+function checkout(){
+if(!cart.length){alert("Your cart is empty!");return;}
+let msg="Hello! I want to order:\n"+cart.map(p=>p.name+" - ৳"+p.price).join("\n")+"\nTotal: ৳"+cart.reduce((s,p)=>s+p.price,0);
+window.open("https://wa.me/8801234567890?text="+encodeURIComponent(msg),"_blank");
+}
+render();
+</script>
+</body>
+</html>
